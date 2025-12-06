@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Workshops | Behind My Profile</title>
+  
+  <link rel="icon" href="bilder/erstes-logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="bilder/erstes-logo.png">
+  <meta property="og:image" content="https://www.heyfem.org/bilder/erstes-logo.png">
+  <meta property="og:title" content="Behind My Profile – Jugend stärken. Zukunft stärken.">
+  <meta property="og:description" content="Eine Initiative für Prävention, Bildung und Empowerment.">
+
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <style>
+    :root{
+      --gap: 24px;
+      --slide-peek: 120px; /* wieviel man vom nächsten Slide sieht */
+      --max-width: 1100px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:#fff;
+      color:#111;
+    }
+
+    /* Header (du hast bereits Code dafür; hier minimal, damit die Seite eigenständig ist) */
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 40px;
+      background:#fff;
+      border-bottom:1px solid #f0f0f0;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    header img{ height:56px; }
+    nav ul{ display:flex; gap:22px; margin:0; padding:0; list-style:none; align-items:center;}
+    nav a{ text-decoration:none; color:#444; font-weight:600; }
+    nav a:hover{ color:#E07BAE; }
+
+    /* Page container */
+    .container{
+      max-width: var(--max-width);
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+
+    /* Title & subtitle */
+    .title{
+      text-align:center;
+      font-weight:800;
+      font-size:46px;
+      line-height:1.06;
+      margin-bottom:10px;
+    }
+    .subtitle{
+      text-align:center;
+      color:#666;
+      margin-bottom:28px;
+      font-size:18px;
+    }
+
+    /* Pills */
+    .pills{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:36px;
+    }
+    .pill{
+      background:#fff;
+      border:1px solid #ebe8e8;
+      padding:10px 18px;
+      border-radius:28px;
+      cursor:pointer;
+      font-weight:600;
+      transition: all .18s;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    }
+    .pill:hover{ transform:translateY(-3px); }
+    .pill.active{
+      background:#000;
+      color:#fff;
+      border-color:#000;
+    }
+
+    /* Carousel viewport */
+    .carousel-viewport{
+      overflow:hidden;
+      padding-bottom:18px; /* etwas platz für dots */
+    }
+
+    /* Slides row */
+    .slides{
+      display:flex;
+      gap: var(--gap);
+      /* We'll move this with JS via transform */
+      will-change: transform;
+      transition: transform 450ms cubic-bezier(.22,.9,.32,1);
+      align-items:stretch;
+      padding-left: calc(var(--slide-peek) / 2); /* so first slide is centered with peek */
+      padding-right: calc(var(--slide-peek) / 2);
+    }
+
+    /* Single slide */
+    .slide{
+      flex: 0 0 calc(100% - var(--slide-peek)); /* visible area so next is peeking */
+      border-radius:20px;
+      display:flex;
+      align-items:stretch;
+      min-height: 360px; /* Höhe: groß wie gewünscht */
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* Inside slide: left image and right content */
+    .slide .left,
+    .slide .right{
+      padding:32px;
+    }
+
+    .slide .left{
+      width:48%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.03);
+    }
+
+    .slide .left img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+    .slide .right{
+      width:52%;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:left;
+    }
+
+    .slide h3{ font-size:30px; margin:0 0 12px; font-weight:800; }
+    .slide p{ margin:0 0 18px; color:#2d2d2d; line-height:1.5; font-size:16px; }
+    .slide .cta {
+    display:inline-block;
+    padding:10px 14px;
+    border-radius:999px;
+    background:transparent;
+    border:2px solid currentColor;
+    font-weight:700;
+    cursor:pointer;
+    transition: all .2s ease;
+    font-size:16px;
+    white-space: nowrap;
+    width: max-content;
+}
+
+    /* Colors for the 6 slides */
+    .slide.slide-1{ background: #FFD324; } /* gelb */
+    .slide.slide-2{ background: #FFDDE8; } /* rosa/pastell */
+    .slide.slide-3{ background: #3E2A59; color: #fff; } /* dunkel lila */
+    .slide.slide-4{ background: #D6F6DD; } /* grün pastell */
+    .slide.slide-5{ background: #D9EEFF; } /* blau pastell */
+    .slide.slide-6{ background: #FFE6CC; } /* orange/peach */
+
+    /* Button-Farben je Slide */
+    .slide-1 .cta { color: #543E00; border-color: #543E00; }   /* Gelb intensiver */
+    .slide-2 .cta { color: #D1638F; border-color: #D1638F; }   /* Rosa Akzent */
+    .slide-3 .cta { color: #fff; border-color: #fff; }         /* Weiß auf dunkel */
+    .slide-4 .cta { color: #3D9160; border-color: #3D9160; }   /* Grün Akzent */
+    .slide-5 .cta { color: #2F7FB5; border-color: #2F7FB5; }   /* Blau Akzent */
+    .slide-6 .cta { color: #E0954A; border-color: #E0954A; }   /* Orange Akzent */
+
+    /* adjust text color for dark slide */
+    .slide-3 h3, .slide-3 p, .slide-3 .cta{ color:#fff; }
+    .slide-3 .cta{ background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); color: #fff; }
+
+    /* make slides taller (you requested more vertical space) */
+    .slide{ min-height: 420px; padding: 0; }
+
+    /* Dots */
+    .dots{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:22px;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%; background:#ddd; cursor:pointer;
+    }
+    .dot.active{ background:#333; }
+
+    /* show a faint strip of next card on the right using pseudo element (not necessary but helps) */
+    @media (max-width:980px){
+      :root{ --slide-peek: 60px; }
+      .slide{ min-height: 380px; }
+    }
+
+    @media (max-width:700px){
+      .slide{
+        flex: 0 0 calc(100% - 40px);
+        min-height: 460px;
+        border-radius: 14px;
+      }
+      .slide .left{ width:100%; padding:12px; }
+      .slide .right{ width:100%; padding:16px; text-align:left; }
+      .slides{ padding-left: 20px; padding-right: 20px; }
+    }
+
+    /* FOOTER */
+footer {
+  background-color: #f9f9f9;
+  padding: 60px 100px 30px;
+  color: #333;
+  border-top: 1px solid #eee;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Social buttons */
+.footer-socials {
+  display: flex;
+  gap: 18px;
+  flex: 0 0 auto;
+}
+
+.footer-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #E07BAE;
+}
+
+.footer-socials svg {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+}
+
+/* Rechtszentrierter Rechtliches-Block */
+.footer-column {
+  text-align: right;
+  flex: 0 0 auto;
+  min-width: 120px;
+}
+
+.footer-column h4 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: #333;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+  text-decoration: none;
+  color: #E07BAE;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.footer-column ul li a:hover {
+  color: #b8528d;
+}
+
+.footer-bottom {
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-column {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <img src="bilder/og-logo.png" alt="Logo">
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="workshops.html">Workshops</a></li>
+        <li><a href="überuns.html">Über uns</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="title">Unsere Workshop-Themen</div>
+    <div class="subtitle">Kostenlose Workshops für Jugendliche & junge Erwachsene zum sicheren Umgang mit Social Media</div>
+
+    <!-- PILL NAV -->
+    <div class="pills" id="pills">
+      <div class="pill active" data-index="0">Social Media & Selbstwert</div>
+      <div class="pill" data-index="1">Identität & Rollen</div>
+      <div class="pill" data-index="2">Plattform-Einflüsse</div>
+      <div class="pill" data-index="3">Gaming-Welten & Communities</div>
+      <div class="pill" data-index="4">Beziehungen</div>
+      <div class="pill" data-index="5">Digitale Balance</div>
+    </div>
+
+    <!-- CAROUSEL -->
+    <div class="carousel-viewport">
+      <div class="slides" id="slides">
+
+        <!-- Slide 1 - GELB (Platzhalterbild links) -->
+        <article class="slide slide-1" data-index="0">
+          <div class="left">
+            <!-- Ersetze den src-Pfad bild/platzhalter.png mit deinem echten Bild -->
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>Social Media & Selbstbild</h3>
+            <p><strong>Wie sehr beeinflusst Social Media, wie du dich selbst siehst?</strong><br>Der Workshop zeigt, wie Vergleiche, perfekte Inszenierungen und filtergeprägte Realitäten das Selbstbild formen. Außerdem wird deutlich, welchen Druck Likes, Trends und digitale Ideale erzeugen – und welche Strategien ein stabiles und authentisches Selbstbild unterstützen.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+        <!-- Slide 2 - ROSA -->
+        <article class="slide slide-2" data-index="1">
+          <div class="left">
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>Identität & Online-Rollen</h3>
+            <p><strong>Wer bist du online und wer bist du wirklich?</strong> <br>Der Workshop zeigt, wie digitale Rollenbilder und Erwartungen das eigene Auftreten prägen. Dabei geht es um Authentizität, den Unterschied zwischen Online- und Offline-Selbst sowie um Gefühle und Selbstakzeptanz im digitalen Raum.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+        <!-- Slide 3 - DUNKEL LILA -->
+        <article class="slide slide-3" data-index="2">
+          <div class="left">
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>TikTok, Instagram & Co. kritisch verstehen</h3>
+            <p><strong>Wie sehr steuern Plattformen eigentlich, was du siehst und wie du dich zeigst?</strong><br>Beleuchtet werden die Wirkung von Algorithmen, Trends und Influencer-Kultur sowie der Unterschied zwischen Inszenierung und Realität. Zudem geht es um Leistungsdruck, FOMO, Dopamin-Effekte und Scrollverhalten.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+        <!-- Slide 4 - GRÜN -->
+        <article class="slide slide-4" data-index="3">
+          <div class="left">
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>Gaming-Welten & Online-Communities</h3>
+            <p><strong>Welche Rolle spielst du im Game und was macht das mit dir?</strong><br>Der Workshop zeigt, wie Gaming Identität, Emotionen und Gruppendynamiken beeinflusst. Themen wie Teamplay, Status, Avatare und Community-Kultur helfen, das soziale Miteinander in digitalen Spielwelten besser zu verstehen.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+        <!-- Slide 5 - BLAU -->
+        <article class="slide slide-5" data-index="4">
+          <div class="left">
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>Kommunikation, Beziehungen & Grenzen online</h3>
+            <p><strong>Warum entstehen online so schnell Missverständnisse und was macht das mit Beziehungen?</strong><br>Der Workshop behandelt Konflikte, Freundschaften, Dating und persönliche Grenzen im digitalen Raum. Auch Ghosting und Screenshot-Kultur werden eingeordnet, um ein respektvolles Kommunikationsverhalten zu stärken.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+        <!-- Slide 6 - ORANGE -->
+        <article class="slide slide-6" data-index="5">
+          <div class="left">
+            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
+          </div>
+          <div class="right">
+            <h3>Online-Wohlbefinden & digitale Balance</h3>
+            <p><strong>Wie bleibst du online entspannt, fokussiert und bei dir?</strong><br>Im Mittelpunkt stehen Reizüberflutung, medienbedingter Stress sowie Schlaf- und Fokusprobleme. Vorgestellt werden praktische Strategien für Pausen, digitale Balance und eine gesündere Nutzung im Alltag.</p>
+            <button class="cta">Workshop anfragen</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="dots" id="dots">
+      <div class="dot active" data-index="0"></div>
+      <div class="dot" data-index="1"></div>
+      <div class="dot" data-index="2"></div>
+      <div class="dot" data-index="3"></div>
+      <div class="dot" data-index="4"></div>
+      <div class="dot" data-index="5"></div>
+    </div>
+
+  </main>
+
+<footer>
+
+  <div class="footer-container">
+
+    <!-- Social Media -->
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/behindmyprofile" target="_blank" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.51 5.51 0 0 0 12 7.5zm0 9A3.5 3.5 0 1 1 15.5 13 3.5 3.5 0 0 1 12 16.5zm4.75-9.88a1.13 1.13 0 1 1-1.13-1.13 1.13 1.13 0 0 1 1.13 1.13z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.linkedin.com/company/hey-fem/" target="_blank" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19 3A2 2 0 0 1 21 5V19A2 2 0 0 1 19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H19M8.34 17.34V10.67H5.67V17.34H8.34M7 9.47C7.83 9.47 8.5 8.8 8.5 7.97C8.5 7.14 7.83 6.47 7 6.47C6.17 6.47 5.5 7.14 5.5 7.97C5.5 8.8 6.17 9.47 7 9.47M18.34 17.34V13.47C18.34 11.07 16.84 9.67 14.84 9.67C13.44 9.67 12.64 10.47 12.27 11.07H12.2V10.67H9.67V17.34H12.34V13.84C12.34 12.87 12.87 12.14 13.74 12.14C14.6 12.14 15.07 12.84 15.07 13.87V17.34H18.34Z"/>
+        </svg>
+      </a>
+
+      <a href="https://www.tiktok.com/@behindmyprofile" target="_blank" aria-label="TikTok">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12.5 2c1.1 1.7 2.8 2.8 4.8 2.9V8c-1.6-.1-3.1-.7-4.4-1.6V15c0 2.7-2.2 5-5 5s-5-2.3-5-5 2.2-5 5-5c.5 0 1 .1 1.5.2v2.9c-.4-.2-.9-.3-1.5-.3-1.3 0-2.3 1-2.3 2.3s1 2.3 2.3 2.3 2.3-1 2.3-2.3V2h2z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Impressum & Datenschutz -->
+    <div class="footer-column">
+      <h4>Behind My Profile</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutzerklaerung.html">Datenschutzerklärung</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Behind My Profile. Alle Rechte vorbehalten.
+  </div>
+
+</footer>
+
+<script>
+(function(){
+  const slidesEl = document.getElementById('slides');
+  const slideEls = Array.from(document.querySelectorAll('.slide'));
+  const pills = Array.from(document.querySelectorAll('.pill'));
+  const dots  = Array.from(document.querySelectorAll('.dot'));
+
+  let current = 0;
+
+  function updateActive(index){
+    // bounds
+    if(index < 0) index = 0;
+    if(index >= slideEls.length) index = slideEls.length - 1;
+    current = index;
+
+    // pill active
+    pills.forEach(p => p.classList.toggle('active', Number(p.dataset.index) === index));
+    dots.forEach(d => d.classList.toggle('active', Number(d.dataset.index) === index));
+
+    // calculate translateX:
+    // We want to move slides row so that the slide at `index` is positioned at the left padding (centered view),
+    // considering slide width and gap. We measure slide offsetWidth dynamically.
+    const slide = slideEls[index];
+    const gap = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gap')) || 24;
+    const slidePeek = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--slide-peek')) || 120;
+
+    // left padding is slide-peek/2 (set in CSS)
+    const viewportPadding = slidePeek / 2;
+
+    // compute distance from start to the selected slide's left edge
+    let offset = 0;
+    for(let i=0;i<index;i++){
+      offset += slideEls[i].offsetWidth + gap;
+    }
+
+    // final translate: move to negative (offset - viewportPadding)
+    const translateX = -(offset - viewportPadding);
+
+    slidesEl.style.transform = `translateX(${translateX}px)`;
+  }
+
+  // initial adjust on load (ensure measurements correct)
+  window.addEventListener('load', () => {
+    updateActive(0);
+    // small resize after fonts load
+    setTimeout(()=> updateActive(current), 200);
+  });
+
+  // click handlers for pills
+  pills.forEach(p => {
+    p.addEventListener('click', () => {
+      const idx = Number(p.dataset.index);
+      updateActive(idx);
+    });
+  });
+
+  // click handlers for dots
+  dots.forEach(d => {
+    d.addEventListener('click', () => {
+      const idx = Number(d.dataset.index);
+      updateActive(idx);
+    });
+  });
+
+  // optional: keyboard left/right
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight') updateActive(Math.min(current + 1, slideEls.length - 1));
+    if(e.key === 'ArrowLeft') updateActive(Math.max(current - 1, 0));
+  });
+
+  // recalc on resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=> updateActive(current), 120);
+  });
+
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
