@@ -117,12 +117,45 @@
       flex: 0 0 calc(100% - var(--slide-peek)); /* visible area so next is peeking */
       border-radius:20px;
       display:flex;
-      align-items:stretch;
+      align-items:center;
       height: 400px; /* Höhe: groß wie gewünscht */
       box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      background-size: cover;
+      background-position: center;
       overflow:hidden;
       position:relative;
     }
+
+    .overlay {
+  position: relative;
+  color: #fff;
+  max-width: 50%; /* Textbereich auf 50% */
+  z-index: 2;
+}
+
+.overlay h3 {
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.overlay p {
+  font-size: 17px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.overlay .cta {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  border: 2px solid #fff;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+}
 
     .slide .left{
   width:48%;
@@ -163,6 +196,13 @@
     white-space: nowrap;
     width: max-content;
 }
+
+.slide-1 { background-image: url("bilder/workshop1.jpg"); }
+.slide-2 { background-image: url("bilder/workshop2.jpg"); }
+.slide-3 { background-image: url("bilder/workshop3.jpg"); }
+.slide-4 { background-image: url("bilder/workshop4.jpg"); }
+.slide-5 { background-image: url("bilder/workshop5.jpg"); }
+.slide-6 { background-image: url("bilder/workshop6.jpg"); }
 
     /* Colors for the 6 slides */
     .slide.slide-1{ background: #FFD324; } /* gelb */
@@ -349,11 +389,7 @@ footer {
 
         <!-- Slide 1 - GELB (Platzhalterbild links) -->
         <article class="slide slide-1" data-index="0">
-          <div class="left">
-            <!-- Ersetze den src-Pfad bild/platzhalter.png mit deinem echten Bild -->
-            <img src="bilder/werbinich.jpg" alt="Workshop 1">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>Social Media & Selbstbild</h3>
             <p><strong>Wie sehr beeinflusst Social Media, wie du dich selbst siehst?</strong><br>Der Workshop zeigt, wie Vergleiche, perfekte Inszenierungen und filtergeprägte Realitäten das Selbstbild formen. Außerdem wird deutlich, welchen Druck Likes, Trends und digitale Ideale erzeugen – und welche Strategien ein stabiles und authentisches Selbstbild unterstützen.</p>
             <button class="cta">Workshop anfragen</button>
@@ -362,10 +398,7 @@ footer {
 
         <!-- Slide 2 - ROSA -->
         <article class="slide slide-2" data-index="1">
-          <div class="left">
-            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>Identität & Online-Rollen</h3>
             <p><strong>Wer bist du online und wer bist du wirklich?</strong> <br>Der Workshop zeigt, wie digitale Rollenbilder und Erwartungen das eigene Auftreten prägen. Dabei geht es um Authentizität, den Unterschied zwischen Online- und Offline-Selbst sowie um Gefühle und Selbstakzeptanz im digitalen Raum.</p>
             <button class="cta">Workshop anfragen</button>
@@ -374,10 +407,7 @@ footer {
 
         <!-- Slide 3 - DUNKEL LILA -->
         <article class="slide slide-3" data-index="2">
-          <div class="left">
-            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>TikTok, Instagram & Co. kritisch verstehen</h3>
             <p><strong>Wie sehr steuern Plattformen eigentlich, was du siehst und wie du dich zeigst?</strong><br>Beleuchtet werden die Wirkung von Algorithmen, Trends und Influencer-Kultur sowie der Unterschied zwischen Inszenierung und Realität. Zudem geht es um Leistungsdruck, FOMO, Dopamin-Effekte und Scrollverhalten.</p>
             <button class="cta">Workshop anfragen</button>
@@ -386,10 +416,7 @@ footer {
 
         <!-- Slide 4 - GRÜN -->
         <article class="slide slide-4" data-index="3">
-          <div class="left">
-            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>Gaming-Welten & Online-Communities</h3>
             <p><strong>Welche Rolle spielst du im Game und was macht das mit dir?</strong><br>Der Workshop zeigt, wie Gaming Identität, Emotionen und Gruppendynamiken beeinflusst. Themen wie Teamplay, Status, Avatare und Community-Kultur helfen, das soziale Miteinander in digitalen Spielwelten besser zu verstehen.</p>
             <button class="cta">Workshop anfragen</button>
@@ -398,10 +425,7 @@ footer {
 
         <!-- Slide 5 - BLAU -->
         <article class="slide slide-5" data-index="4">
-          <div class="left">
-            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>Kommunikation, Beziehungen & Grenzen online</h3>
             <p><strong>Warum entstehen online so schnell Missverständnisse und was macht das mit Beziehungen?</strong><br>Der Workshop behandelt Konflikte, Freundschaften, Dating und persönliche Grenzen im digitalen Raum. Auch Ghosting und Screenshot-Kultur werden eingeordnet, um ein respektvolles Kommunikationsverhalten zu stärken.</p>
             <button class="cta">Workshop anfragen</button>
@@ -410,10 +434,7 @@ footer {
 
         <!-- Slide 6 - ORANGE -->
         <article class="slide slide-6" data-index="5">
-          <div class="left">
-            <img src="bilder/platzhalter.png" alt="Workshop Bild Platzhalter">
-          </div>
-          <div class="right">
+          <div class="overlay">
             <h3>Online-Wohlbefinden & digitale Balance</h3>
             <p><strong>Wie bleibst du online entspannt, fokussiert und bei dir?</strong><br>Im Mittelpunkt stehen Reizüberflutung, medienbedingter Stress sowie Schlaf- und Fokusprobleme. Vorgestellt werden praktische Strategien für Pausen, digitale Balance und eine gesündere Nutzung im Alltag.</p>
             <button class="cta">Workshop anfragen</button>
